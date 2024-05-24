@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>トップメニュー</title>
+</head>
+<body>	
+	<div th:insert="~{common/sourceList :: sourceList}"></div>
+	<div th:replace="~{common/header :: header}"></div>
+	トップメニューです<br/>	<br/>
+	<th:block th:if="${hasUserManageAuth}">
+
+		<a th:href="@{userList}" class="btn btn-danger">管理画面へ</a><br/><br/>
+	</th:block>
+	<th:block th:if="${unSigned}">
+		<a th:href="@{/contract}" 	class="btn btn-primary">ご契約</a><br/><br/>
+	</th:block>
+</body>
+</html>
