@@ -30,5 +30,11 @@ public class MessageConst {
 	
 	/** ユーザ編集画面:更新失敗 */
 	public static final String USEREDIT_UPDATE_FAILED = "useEdit.updateFailed";
-
+	
+	/** ワンタイムコード送信メール:タイトル */
+	public static final String SIGNUP_MAIL_SUBJECT = "signup.mailSubject";
+	
+	/** ワンタイムコード送信メール:本文 */
+	public static final String SIGNUP_MAIL_TEXT = "signup.mailText";
+	
 }

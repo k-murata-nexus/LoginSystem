@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import java.util.Optional;
 
 import org.springframework.context.MessageSource;
@@ -9,16 +11,21 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.constant.MessageConst;
+import com.example.demo.constant.SessionKeyConst;
 import com.example.demo.constant.SignupMessage;
 import com.example.demo.constant.UrlConst;
 import com.example.demo.constant.ViewNameConst;
+import com.example.demo.entity.SignupInfo;
 import com.example.demo.entity.UserInfo;
 import com.example.demo.form.SignupForm;
 import com.example.demo.service.SignupService;
 import com.example.demo.util.AppUtil;
+import com.github.dozermapper.core.Mapper;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -36,6 +43,16 @@ public class SignupController {
 	
 	/** メッセージソース */
 	private final MessageSource messageSource;
+	
+	/** オブジェクト間項目輸送クラス */
+	private final Mapper mapper;
+	
+	/** セッションオブジェクト */
+	private final HttpSession session;
+	
+	/** 画面で使用するフォームクラス名 */
+	private static final String FORM_CLASS_NAME = "signForm";
+	
 	/**
 	 * 初期表示
 	 * 
@@ -45,7 +62,10 @@ public class SignupController {
 	 */
 	@GetMapping(UrlConst.SIGNUP)
 	public String view(Model model,SignupForm form) {
-		
+		var isInitialDisp = !model.containsAttribute(FORM_CLASS_NAME);
+		if(isInitialDisp) {
+			model.addAttribute(FORM_CLASS_NAME,new SignupForm());
+		}
 		return ViewNameConst.SIGNUP;
 	}
 	
@@ -57,17 +77,21 @@ public class SignupController {
 	 * @return 表示画面
 	 */
 	@PostMapping(UrlConst.SIGNUP)
-	public void signup(Model model,@Validated SignupForm form,BindingResult bdResult) {
+	public String signup(@Validated SignupForm form,BindingResult bdResult,RedirectAttributes redirectAttributes) {
 		if(bdResult.hasErrors()) {
-			var message=AppUtil.getMessages(messageSource, MessageConst.FORM_ERROR);
-			model.addAttribute("message",message);
+			editGuideMessage(form,bdResult,MessageConst.FORM_ERROR,redirectAttributes);
+			return AppUtil.doRedirect(UrlConst.SIGNUP);
 		}
-		var userInfoOpt = service.resistUserInfo(form);
-		var signupMessage=judgeMessageKey(userInfoOpt);
-		var messageId=AppUtil.getMessages(messageSource, signupMessage.getMessageId());
-		model.addAttribute("message",messageId);
-		model.addAttribute("isError",signupMessage.isError());
 		
+		var singupResult = service.signup(mapper.map(form,SignupInfo.class));
+		var isError = signupResult != SignupResult.SUCCEED;
+		if(isError) {
+			editGuideMessage(form,bdResult,signupResult.getMessageId(),redirectAttributes);
+			return AppUtil.doRedirect(UrlConst.SIGNUP);
+		}
+		
+		session.setAttribute(SessionKeyConst.ONE_TIME_AUTH_LOGIN_ID,form.getLoginId());
+		return AppUtil.doRedirect(UrlConst.SIGNUP_CONFIRM);
 	}
 
 	/**

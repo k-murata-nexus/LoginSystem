@@ -70,6 +70,10 @@ public class UserInfo {
 	@Convert(converter = UserAuthorityConverter.class)
 	private AuthorityKind authorityKind;
 	
+	/** 本登録完了有無 */
+	@Column(name = "is_signup_completed")
+	private boolean signupCompleted;
+	
 	/** 登録日時 */
 	@Column(name="create_time")
 	private LocalDateTime createTime;
@@ -92,7 +96,9 @@ public class UserInfo {
 	 * 
 	 */
 	public UserInfo incrementLoginFailureCount() {
-		return new UserInfo(loginId,password,mailAddress,oneTimeCode,oneTimeCodeSendTime,contract_time,++loginFailureCount,accountLockedTime,userStatusKind,authorityKind,createTime,updateTime,updateUser);
+		return new UserInfo(loginId,password,mailAddress,oneTimeCode,oneTimeCodeSendTime
+				,contract_time,++loginFailureCount,accountLockedTime
+				,userStatusKind,authorityKind,signupCompleted,createTime,updateTime,updateUser);
 	}
 	
 	/**
@@ -101,7 +107,8 @@ public class UserInfo {
 	 * @return ログイン失敗情報がリセットされたUserInfo
 	 */
 	public UserInfo resetLoginFailureInfo() {
-		return new UserInfo(loginId,password,mailAddress,oneTimeCode,oneTimeCodeSendTime,contract_time,0,null,userStatusKind,authorityKind,createTime,updateTime,updateUser);
+		return new UserInfo(loginId,password,mailAddress,oneTimeCode,oneTimeCodeSendTime
+				,contract_time,0,null,userStatusKind,authorityKind,signupCompleted,createTime,updateTime,updateUser);
 	}
 	
 	/**
@@ -110,7 +117,9 @@ public class UserInfo {
 	 * @return ログイン失敗回数、アカウントロック日時が更新されたUserInfo
 	 */
 	public UserInfo updateAccountLocked() {
-		return new UserInfo(loginId,password,mailAddress,oneTimeCode,oneTimeCodeSendTime,contract_time,0,LocalDateTime.now(),userStatusKind,authorityKind,createTime,updateTime,updateUser);
+		return new UserInfo(loginId,password,mailAddress,oneTimeCode,oneTimeCodeSendTime
+				,contract_time,0,LocalDateTime.now(),userStatusKind,authorityKind,
+				signupCompleted,createTime,updateTime,updateUser);
 	}
 	
 	/**
@@ -119,6 +128,9 @@ public class UserInfo {
 	 * @return 契約日時が更新されたUserInfo
 	 */
 	public UserInfo completeContract() {
-		return new UserInfo(loginId,password,mailAddress,oneTimeCode,oneTimeCodeSendTime,LocalDateTime.now(),loginFailureCount,accountLockedTime,userStatusKind,authorityKind,createTime,updateTime,updateUser);
+		return new UserInfo(loginId,password,mailAddress,oneTimeCode,oneTimeCodeSendTime,
+				LocalDateTime.now(),loginFailureCount,accountLockedTime,userStatusKind,
+				authorityKind,signupCompleted,createTime,updateTime,updateUser);
 	}
+	
 }

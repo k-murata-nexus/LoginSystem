@@ -1,16 +1,24 @@
 package com.example.demo.service;
 
+import java.text.MessageFormat;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.constant.MessageConst;
 import com.example.demo.constant.db.AuthorityKind;
 import com.example.demo.constant.db.UserStatusKind;
+import com.example.demo.entity.SignupInfo;
 import com.example.demo.entity.UserInfo;
 import com.example.demo.form.SignupForm;
 import com.example.demo.repository.UserInfoRepository;
+import com.example.demo.util.AppUtil;
 import com.github.dozermapper.core.Mapper;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +34,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SignupService {
 	
+	/** メール送信Serviceクラス */
+	private final MailSendService mailSendService;
+	
 	/** ユーザ情報テーブルDAO */
 	private final UserInfoRepository repository;
 	
@@ -34,6 +45,53 @@ public class SignupService {
 	
 	/** PasswordEncoder */
 	private final PasswordEncoder passwordEncoder;
+	
+	/** メッセージソース */
+	private final MessageSource messageSource;
+	
+	/** ワンタイムコードの長さ */
+	@Value("${one-time-code.valid-time}")
+	private Duration oneTimeCodeValidTime = Duration.ZERO;
+	
+	/** ワンタイムコードの長さ */
+	@Value("${one-time-code.length}")
+	private int oneTimeCodeLength = 0;
+	
+	
+	public SignResult signup(SignupInfo dto) {
+		var userInfoOpt = repository.findById(dto.getLoginId());
+		if(userInfoOpt.isPresent()) {
+			var userInfo = userInfoOpt.get();
+			if(userInfo.isSignupCompleted()) {
+				return SignupResult.FAILUTE_BY_ALREADY_COMPLETED;
+			}
+			return SignupResult.FAILUTE_BY_SIGNUP_PROCEEDING;
+		}
+		
+		var oneTimeCode = generatedRandomString();
+		var signupInfo = editSignupInfo(dto,oneTimeCode);
+		try {
+			repository.save(signupInfo);
+		}catch(Exception e) {
+			return SignupResult.FALUTE_BY_DB_ERROR;
+		}
+		
+		//ユーザがメール本文からアクセスする本登録用のリンクを作成
+		var mailTextBase = AppUtil.getMessages(messageSource, MessageConst.SIGNUP_MAIL_TEXT);
+		var mailText = MessageFormat.format(mailTextBase,oneTimeCode,oneTimeCodeValidTime.toMinutes());
+		
+		var mailSubject = AppUtil.getMessages(messageSource, MessageConst.SIGNUP_MAIL_SUBJECT);
+		var canSendMail = mailSendService.sendMail(dto.getMailAddress(),mailSubject,mailText);
+		if(!canSendMail) {
+			var isDeleteFailure = deleteSignupInfo(dto.getLoginId());
+			if(!isDeleteFailure) {
+				return SignupResult.FAILUTE_BY_DB_ERROR;
+			}
+			return SignupResult.FAILURE_BY_MAIL_SEND_ERROR;
+		}
+				
+		return SignupResult.SUCCEED;
+	}
 	
 	/**
 	 * ユーザ情報テーブル 主キー検索
@@ -61,9 +119,36 @@ public class SignupService {
 		userInfo.setCreateTime(LocalDateTime.now());
 		userInfo.setUpdateTime(LocalDateTime.now());
 		userInfo.setUpdateUser(form.getLoginId());
-		//userInfo.setContract_time(time);
 		
 		return Optional.of(repository.save(userInfo));
+	}
+	
+	
+	
+	private String generatedRandomString() {
+		var sb = new StringBuilder();
+		for(int i = 0;i<oneTimeCodeLength;i++) {
+			var randomNum = ThreadLocalRandom.current().nextInt(10);
+			sb.append(randomNum);
+		}
+		return sb.toString();
+	}
+	
+	private UserInfo editSignupInfo(SignupInfo dto,String oneTimeCode) {
+		var userInfo = new UserInfo();
+		userInfo.setLoginId(dto.getLoginId());
+		userInfo.setPassword(passwordEncoder.encode(dto.getPassword()));
+		userInfo.setMailAddress(dto.getMailAddress());
+		userInfo.setOneTimeCode(passwordEncoder.encode(oneTimeCode));
+		userInfo.setOneTimeCodeSendTime(LocalDateTime.now());
+		userInfo.setUserStatusKind(UserStatusKind.DISABLED);
+		userInfo.setAuthorityKind(AuthorityKind.ITEM_WATCHER);
+		userInfo.setSignupCompleted(false);
+		userInfo.setCreateTime(LocalDateTime.now());
+		userInfo.setUpdateTime(LocalDateTime.now());
+		userInfo.setUpdateUser(dto.getLoginId());
+		
+		return userInfo;
 	}
 
 }
