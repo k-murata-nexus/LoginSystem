@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.common;
 
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class MailSendService{
+public class MailSendServiceImpl implements MailSendService{
 
 	/** メール送信用クラス */
 	private final MailSender mailSender;
@@ -28,3 +28,4 @@ public class MailSendService{
 	}
 	
 }
+

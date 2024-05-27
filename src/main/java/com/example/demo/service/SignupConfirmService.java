@@ -1,26 +1,21 @@
 package com.example.demo.service;
 
-import java.time.Duration;
+import com.example.demo.constant.SignupConfirmStatus;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+/**
+ * ユーザー登録情報確認画面Serviceインターフェース
+ * 
+ * @author ys-fj
+ *
+ */
+public interface SignupConfirmService {
 
-import com.example.demo.repository.UserInfoRepository;
-
-import lombok.RequiredArgsConstructor;
-
-@Service
-@RequiredArgsConstructor
-public class SignupConfirmService {
-
-	/** ユーザ情報テーブルRepositoryクラス */
-	private final UserInfoRepository repository;
-	
-	/** パスワードエンコーダー */
-	private final PasswordEncoder passwordEncoder;
-	
-	/** ワンタイムコード有効期間 */
-	@Value("${one-time-code.valid-time}")
-	private Duration oneTimeCodeVAlidTime = Duration.ZERO;
+	/**
+	 * ログインIDとワンタイムコードを使用して本登録可能な仮登録ユーザーが存在するか検索します。
+	 * 
+	 * @param loginId ログインID
+	 * @param oneTimeCode ワンタイムコード
+	 * @return 検索結果(エラーが無ければ{@code SignupResult.SUCCEED})
+	 */
+	SignupConfirmStatus chkTentativeSignupUser(String loginId, String oneTimeCode);
 }

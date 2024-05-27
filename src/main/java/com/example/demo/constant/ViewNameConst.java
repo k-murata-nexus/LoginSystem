@@ -32,4 +32,7 @@ public class ViewNameConst {
 
 	/** 仮登録画面 */
 	public static final String SIGNUP_CONFIRM = "signupConfirm";
+	
+	/** 本登録画面 */
+	public static final String SIGNUP_CONPLETION = "signupConpletion";
 }

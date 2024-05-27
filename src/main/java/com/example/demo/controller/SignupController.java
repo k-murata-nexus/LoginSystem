@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import java.util.Optional;
 
 import org.springframework.context.MessageSource;
@@ -16,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.demo.constant.MessageConst;
 import com.example.demo.constant.SessionKeyConst;
 import com.example.demo.constant.SignupMessage;
+import com.example.demo.constant.SignupResult;
 import com.example.demo.constant.UrlConst;
 import com.example.demo.constant.ViewNameConst;
 import com.example.demo.entity.SignupInfo;
@@ -83,7 +82,7 @@ public class SignupController {
 			return AppUtil.doRedirect(UrlConst.SIGNUP);
 		}
 		
-		var singupResult = service.signup(mapper.map(form,SignupInfo.class));
+		var signupResult = service.signup(mapper.map(form,SignupInfo.class));
 		var isError = signupResult != SignupResult.SUCCEED;
 		if(isError) {
 			editGuideMessage(form,bdResult,signupResult.getMessageId(),redirectAttributes);
@@ -105,5 +104,25 @@ public class SignupController {
 		}else {
 			return SignupMessage.SUCCEED;
 		}
+	}
+	
+	/**
+	 * メッセージIDを使ってプロパティファイルからメッセージを取得し、画面に表示します。
+	 * 
+	 * <p>また、画面でメッセージを表示する際に通常メッセージをエラーメッセージとで色分けをするため、<br>
+	 * その判定に必要な情報も画面に渡します。
+	 * 
+	 * @param form 入力情報
+	 * @param bdResult 入力内容の短項目チェック結果
+	 * @param messageId プロパティファイルから取得したいメッセージのID
+	 * @param isError エラー有無
+	 * @param redirectAttributes リダイレクト用モデル
+	 */
+	private void editGuideMessage(SignupForm form,BindingResult bdResult,String messageId,
+						RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("message",AppUtil.getMessages(messageSource, messageId));
+		redirectAttributes.addFlashAttribute("isError",true);
+		redirectAttributes.addFlashAttribute(form);
+		redirectAttributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + FORM_CLASS_NAME,bdResult);
 	}
 }

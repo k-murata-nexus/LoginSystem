@@ -37,5 +37,10 @@ public class AppUtil {
 	public static String doRedirect(String url) {
 		return "redirect:"+url;
 	}
+
+	public static String getMessage(MessageSource messageSource, Object messageId) {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
 	
 }
