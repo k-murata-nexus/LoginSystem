@@ -20,7 +20,7 @@ public class AppUtil {
 	 * @param params 置換文字群
 	 * @return メッセージ
 	 */
-	public static String getMessages(MessageSource messageSource,String key,Object... params) {
+	public static String getMessage(MessageSource messageSource,String key,Object... params) {
 		return messageSource.getMessage(key,params,Locale.JAPAN);
 	}
 	
@@ -36,11 +36,6 @@ public class AppUtil {
 
 	public static String doRedirect(String url) {
 		return "redirect:"+url;
-	}
-
-	public static String getMessage(MessageSource messageSource, Object messageId) {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
 	}
 	
 }

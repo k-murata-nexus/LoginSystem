@@ -49,6 +49,11 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username)throws UsernameNotFoundException{
 		var userInfo = repository.findById(username)
 				.orElseThrow(()-> new UsernameNotFoundException(username));
+		
+		if(!userInfo.isSignupCompleted()) {
+			throw new UsernameNotFoundException(username);
+		}
+		
 		var accountLockedTime = userInfo.getAccountLockedTime();
 		var isAccountLocked = accountLockedTime!=null
 				&& accountLockedTime.plusHours(lockingTime).isAfter(LocalDateTime.now());
@@ -70,6 +75,9 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	public void handle(AuthenticationFailureBadCredentialsEvent event) {
 		var loginId = event.getAuthentication().getName();
 		repository.findById(loginId).ifPresent(userInfo -> {
+			if(!userInfo.isSignupCompleted()) {
+				return;
+			}
 			repository.save(userInfo.incrementLoginFailureCount());
 			
 			var isReachFailureCount = userInfo.getLoginFailureCount()==lockingBorderCount;

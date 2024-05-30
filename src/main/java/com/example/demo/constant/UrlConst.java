@@ -25,7 +25,7 @@ public class UrlConst {
 	public static final String CONTRACT = "/contract";
 	
 	/** 認証不要画面 */
-	public static final String[] NO_AUTHENTICATION = {LOGIN,SIGNUP,"/webjars/**","/css/**"};
+	public static final String[] NO_AUTHENTICATION = {LOGIN,SIGNUP, SIGNUP_CONFIRM, SIGNUP_COMPLETION,"/webjars/**","/css/**"};
 	
 	/** ユーザ管理画面 */
 	public static final String USER_LIST = "/userList";

@@ -40,6 +40,21 @@ public class WebSecurityConfig {
 	/** ユーザ名：ユーザID */
 	private final String USERNAME_PARAMETER = "loginId";
 	
+	/**
+	 * Spring Securityの隠すカスタマイズを行います。
+	 * 
+	 * <p>カスタマイズ設定するのは、以下の項目になります。
+	 * <ul>
+	 * <li>認証不要URL</li>
+	 * <li>ログイン画面のURL</li>
+	 * <li>usernameとして利用するリクエストパラメータ名</li>
+	 * <li>ログイン成功時のリダイレクト先URL</li>
+	 * </ul>
+	 * @param http セキュリティ設定
+	 * @return カスタマイズ結果
+	 * @throws Exception 予期せぬ例外が発生した場合
+	 */
+	
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{
 		

@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.constant.SignupConfirmStatus;
+import com.example.demo.constant.db.UserStatusKind;
 import com.example.demo.repository.UserInfoRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class SignupConfirmServiceImpl implements SignupConfirmService{
 	public SignupConfirmStatus chkTentativeSignupUser(String loginId,String oneTimeCode) {
 		var updateInfoOpt = repository.findById(loginId);
 		if(updateInfoOpt.isEmpty()) {
-			return SignupConfirmStatus.FAILURE_BY_EXISTS_TENTATIVE_USER;
+			return SignupConfirmStatus.FAILURE_BY_NOT_EXISTS_TENTATIVE_USER;
 		}
 		var updateInfo = updateInfoOpt.get();
 		
@@ -53,6 +54,7 @@ public class SignupConfirmServiceImpl implements SignupConfirmService{
 		updateInfo.setOneTimeCodeSendTime(null);
 		updateInfo.setUpdateTime(LocalDateTime.now());
 		updateInfo.setUpdateUser(loginId);
+		updateInfo.setUserStatusKind(UserStatusKind.ENABLED);
 		
 		try {
 			repository.save(updateInfo);	

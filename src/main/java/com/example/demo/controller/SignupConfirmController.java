@@ -47,9 +47,9 @@ public class SignupConfirmController {
 		var signupConfirmStatus = service.chkTentativeSignupUser(loginId,oneTimeCode);
 		
 		//次画面にワンタイムコード認証結果の情報を渡す
-		var messageId = AppUtil.getMessage(messageSource, signupConfirmStatus.getMessageId());
+		var message = AppUtil.getMessage(messageSource, signupConfirmStatus.getMessageId());
 		var isError = signupConfirmStatus != SignupConfirmStatus.SUCCEED;
-		redirectAttributes.addFlashAttribute("message",messageId);
+		redirectAttributes.addFlashAttribute("message",message);
 		redirectAttributes.addFlashAttribute("isError",isError);
 		if(isError) {
 			return AppUtil.doRedirect(UrlConst.SIGNUP_CONFIRM);

@@ -8,6 +8,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;
 
+/**
+ * Bean定義クラス
+ * 
+ * @author k-murata
+ * 
+ */
 
 @Configuration
 public class BeanDefine {

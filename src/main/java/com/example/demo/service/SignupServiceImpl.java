@@ -83,10 +83,10 @@ public class SignupServiceImpl implements SignupService {
 		}
 		
 		//ユーザがメール本文からアクセスする本登録用のリンクを作成
-		var mailTextBase = AppUtil.getMessages(messageSource, MessageConst.SIGNUP_MAIL_TEXT);
+		var mailTextBase = AppUtil.getMessage(messageSource, MessageConst.SIGNUP_MAIL_TEXT);
 		var mailText = MessageFormat.format(mailTextBase,oneTimeCode,oneTimeCodeValidTime.toMinutes());
 		
-		var mailSubject = AppUtil.getMessages(messageSource, MessageConst.SIGNUP_MAIL_SUBJECT);
+		var mailSubject = AppUtil.getMessage(messageSource, MessageConst.SIGNUP_MAIL_SUBJECT);
 		var canSendMail = mailSendService.sendMail(dto.getMailAddress(),mailSubject,mailText);
 		if(!canSendMail) {
 			var isDeleteFailure = deleteSignupInfo(dto.getLoginId());
@@ -129,8 +129,11 @@ public class SignupServiceImpl implements SignupService {
 		return Optional.of(repository.save(userInfo));
 	}
 	
-	
-	
+	/**
+	 * ランダムな数字でワンタイムコードを生成します。
+	 * 
+	 * @return ワンタイムコード
+	 */
 	private String generatedRandomString() {
 		var sb = new StringBuilder();
 		for(int i = 0;i<oneTimeCodeLength;i++) {

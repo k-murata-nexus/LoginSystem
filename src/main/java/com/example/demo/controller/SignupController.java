@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.Optional;
-
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,12 +11,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.constant.MessageConst;
 import com.example.demo.constant.SessionKeyConst;
-import com.example.demo.constant.SignupMessage;
 import com.example.demo.constant.SignupResult;
 import com.example.demo.constant.UrlConst;
 import com.example.demo.constant.ViewNameConst;
 import com.example.demo.entity.SignupInfo;
-import com.example.demo.entity.UserInfo;
 import com.example.demo.form.SignupForm;
 import com.example.demo.service.SignupService;
 import com.example.demo.util.AppUtil;
@@ -98,13 +94,13 @@ public class SignupController {
 	 * @param userInfoOpt ユーザ登録結果(登録済みだった場合はEmpty)
 	 * @return メッセージキー
 	 */
-	private SignupMessage judgeMessageKey(Optional<UserInfo> userInfoOpt) {
-		if(userInfoOpt.isEmpty()) {
-			return SignupMessage.EXISTED_LOGIN_ID;
-		}else {
-			return SignupMessage.SUCCEED;
-		}
-	}
+//	private SignupMessage judgeMessageKey(Optional<UserInfo> userInfoOpt) {
+//		if(userInfoOpt.isEmpty()) {
+//			return SignupMessage.EXISTED_LOGIN_ID;
+//		}else {
+//			return SignupMessage.SUCCEED;
+//		}
+//	}
 	
 	/**
 	 * メッセージIDを使ってプロパティファイルからメッセージを取得し、画面に表示します。
@@ -120,7 +116,7 @@ public class SignupController {
 	 */
 	private void editGuideMessage(SignupForm form,BindingResult bdResult,String messageId,
 						RedirectAttributes redirectAttributes) {
-		redirectAttributes.addFlashAttribute("message",AppUtil.getMessages(messageSource, messageId));
+		redirectAttributes.addFlashAttribute("message",AppUtil.getMessage(messageSource, messageId));
 		redirectAttributes.addFlashAttribute("isError",true);
 		redirectAttributes.addFlashAttribute(form);
 		redirectAttributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + FORM_CLASS_NAME,bdResult);

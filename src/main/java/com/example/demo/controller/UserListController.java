@@ -106,7 +106,7 @@ public class UserListController {
 	public String deleteUser(Model model,UserListForm form) {
 		var executeResult = service.deleteUserInfoById(form.getSelectedLoginId());
 		model.addAttribute("isError",executeResult == UserDeleteResult.ERROR);
-		model.addAttribute("message",AppUtil.getMessages(messageSource,executeResult.getMessageId()));
+		model.addAttribute("message",AppUtil.getMessage(messageSource,executeResult.getMessageId()));
 		
 		return searchUser(model,form.clearSelectedLoginId());
 	}
