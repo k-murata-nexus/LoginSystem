@@ -37,10 +37,14 @@ public class MenuController {
 		var hasUserManageAuth = user.getAuthorities().stream()
 				.allMatch(authority -> authority.getAuthority()
 						.equals(AuthorityKind.ITEM_AND_USER_MANAGER.getCode()));
+		var hasUserEditAuth = user.getAuthorities().stream()
+				.allMatch(authority -> authority.getAuthority()
+						.equals(AuthorityKind.ITEM_MANAGER.getCode()));
 		var userInfo=service.serchUserById(user.getUsername());
 		var unSigned = userInfo.get().getContract_time()==null;
 
 		model.addAttribute("hasUserManageAuth",hasUserManageAuth);
+		model.addAttribute("hasUserEditAuth",hasUserEditAuth);
 		model.addAttribute("unSigned",unSigned);
 		
 		return ViewNameConst.MENU;

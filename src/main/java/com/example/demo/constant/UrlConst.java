@@ -18,6 +18,9 @@ public class UrlConst {
 	
 	public static final String SIGNUP_COMPLETION = "/signupCompletion";
 	
+	/** ユーザ詳細情報登録画面 */
+	public static final String DETAILED = "/detailed";
+	
 	/** メニュー画面 */
 	public static final String MENU = "/menu";
 	

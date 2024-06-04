@@ -10,10 +10,13 @@
 	<dev slass="container-fluid">
 		トップメニューです<br/>	<br/>
 		<th:block th:if="${hasUserManageAuth}">
-			<a th:href="@{/userList}" class="btn btn-danger">管理画面へ</a><br/><br/>
+			<a th:href="@{/userList}"class="btn btn-danger">管理画面へ</a><br/><br/>
+		</th:block>
+		<th:block th:if="${hasUserEditAuth || hasUserManageAuth}">
+			<a th:href="@{/detailed}" 	class="btn btn-primary">詳細登録</a><br/><br/>
 		</th:block>
 		<th:block th:if="${unSigned}">
-			<a th:href="@{/contract}" 	class="btn btn-primary">ご契約</a><br/><br/>
+			<a th:href="@{/contract}"class="btn btn-primary">ご契約</a><br/><br/>
 		</th:block>
 	</dev>
 </body>

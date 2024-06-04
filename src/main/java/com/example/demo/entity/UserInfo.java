@@ -86,6 +86,18 @@ public class UserInfo {
 	@Column(name="update_user")
 	private String updateUser;
 	
+	/** 会社名 */
+	@Column(name="company_name")
+	private String companyName;
+	
+	/** 会社住所 */
+	@Column(name="company_address")
+	private String companyAddress;
+	
+	/** 電話番号 */
+	@Column(name="telephone_number")
+	private String telephoneNumber;
+	
 	public UserInfo() {
 	}
 	
@@ -98,7 +110,8 @@ public class UserInfo {
 	public UserInfo incrementLoginFailureCount() {
 		return new UserInfo(loginId,password,mailAddress,oneTimeCode,oneTimeCodeSendTime
 				,contract_time,++loginFailureCount,accountLockedTime
-				,userStatusKind,authorityKind,signupCompleted,createTime,updateTime,updateUser);
+				,userStatusKind,authorityKind,signupCompleted,createTime,updateTime,updateUser
+				,companyName,companyAddress,telephoneNumber);
 	}
 	
 	/**
@@ -108,7 +121,8 @@ public class UserInfo {
 	 */
 	public UserInfo resetLoginFailureInfo() {
 		return new UserInfo(loginId,password,mailAddress,oneTimeCode,oneTimeCodeSendTime
-				,contract_time,0,null,userStatusKind,authorityKind,signupCompleted,createTime,updateTime,updateUser);
+				,contract_time,0,null,userStatusKind,authorityKind,signupCompleted,createTime,updateTime,updateUser
+				,companyName,companyAddress,telephoneNumber);
 	}
 	
 	/**
@@ -119,7 +133,8 @@ public class UserInfo {
 	public UserInfo updateAccountLocked() {
 		return new UserInfo(loginId,password,mailAddress,oneTimeCode,oneTimeCodeSendTime
 				,contract_time,0,LocalDateTime.now(),userStatusKind,authorityKind,
-				signupCompleted,createTime,updateTime,updateUser);
+				signupCompleted,createTime,updateTime,updateUser
+				,companyName,companyAddress,telephoneNumber);
 	}
 	
 	/**
@@ -130,7 +145,8 @@ public class UserInfo {
 	public UserInfo completeContract() {
 		return new UserInfo(loginId,password,mailAddress,oneTimeCode,oneTimeCodeSendTime,
 				LocalDateTime.now(),loginFailureCount,accountLockedTime,userStatusKind,
-				authorityKind,signupCompleted,createTime,updateTime,updateUser);
+				authorityKind,signupCompleted,createTime,updateTime,updateUser
+				,companyName,companyAddress,telephoneNumber);
 	}
 	
 }

@@ -34,6 +34,10 @@ public class MessageConst {
 	/** ユーザ登録:ユーザ登録完了 */
 	public static final String SIGNUP_RESIST_SUCCEED = "signup.resistSucceed";
 	
+	/** ユーザ登録:ユーザ登録完了 */
+	public static final String DETAIL_TELEPHONE_NUMBER = "detailed.TelephoneNumber";
+
+	
 	/** ユーザ登録情報確認画面：既に本登録済み */
 	public static final String SIGNUP_CONFIRM_ALREADY_COMPLETED = "signupConfirm.alreadyCompleted";
 

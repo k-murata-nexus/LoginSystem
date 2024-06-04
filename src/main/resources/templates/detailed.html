@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>詳細情報登録画面</title>
+</head>
+<body>
+	<div th:insert="~{common/sourceList :: sourceList}"></div>
+	<div th:replace="~{common/header :: header}"></div>
+	<div th:replace="~{common/messageIcon :: messageIcon}"></div>
+	<div class="container-fluid">
+		<h2>詳細情報登録画面</h2>
+		<div class="alert d-flex align-items-center" th:classappend="|${isError ? 'alert-danger':'alert-primary'}|" role="alert" th:if="${message}!=null">
+			<svg class="bi flex-shrink-0 me-2" width="24" height="24">
+				<use xlink:href="#exclamation-triangle-fill" th:if="${isError}" />
+				<use xlink:href="#info-fill" th:unless="${isError}" />
+			</svg>
+			<span th:text="${message}"></span>
+		</div>
+		<form th:action="@{/detailed}" method="post" th:object="${detailedForm}">
+			<div class="form-group">
+				<span th:if="${#fields.hasErrors('companyName')}"th:errors="*{companyName}"></span>
+				<div class="col-9 col-md-6 col-xx-3">
+					<p><label for="companyName">会社名:</label>
+					<input type="text" class="form-control" th:field="*{companyName}"></p>
+				</div>
+				<span th:if="${#fields.hasErrors('companyAddress')}"th:errors="*{companyAddress}"></span>
+				<div class="col-9 col-md-6 col-xx-3">
+					<p><label for="companyAddress">会社所在地:</label>
+					<input type="text" class="form-control" th:field="*{companyAddress}"></p>
+				</div>
+				<span th:if="${#fields.hasErrors('telephoneNumber')}"th:errors="*{telephoneNumber}"></span>
+				<div class="col-9 col-md-6 col-xx-3">
+					<p><label for="telephoneNumber">電話番号:</label>
+					<input type="text" class="form-control" th:field="*{telephoneNumber}"></p>
+				</div>
+				<p><input type="submit" class="btn btn-primary" value="詳細登録"></p>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

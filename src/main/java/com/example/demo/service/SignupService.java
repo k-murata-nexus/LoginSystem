@@ -6,7 +6,7 @@ import com.example.demo.entity.SignupInfo;
 /**
  * ユーザー登録画面Serviceインターフェース
  * 
- * @author ys-fj
+ * @author k-murata
  *
  */
 public interface SignupService {
