@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import com.example.demo.constant.UserDeleteResult;
 import com.example.demo.entity.UserListInfo;
 import com.example.demo.entity.UserSearchInfo;
 
@@ -22,15 +21,6 @@ public class UserComListServiceImpl implements UserComListService {
 	 */
 	@Override
 	public List<UserListInfo> editUserListByParam(UserSearchInfo dto) {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public UserDeleteResult deleteUserInfoById(String loginId) {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}

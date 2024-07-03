@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import com.example.demo.constant.UserDeleteResult;
 import com.example.demo.entity.UserListInfo;
 import com.example.demo.entity.UserSearchInfo;
 
@@ -24,12 +23,6 @@ public interface UserComListService {
 	 */
 	public List<UserListInfo> editUserListByParam(UserSearchInfo dto);
 	
-	/**
-	 * 指定されたIDのユーザ情報を削除します。
-	 * 
-	 * @param loginId
-	 * @return
-	 */
-	public UserDeleteResult deleteUserInfoById(String loginId);
+
 
 }

@@ -22,7 +22,7 @@ public class CommunicationReadingService {
 	/** セッション情報 */
 	private final HttpSession session;
 	
-	/**  */
+	/** 連絡情報呼び出し */
 	public List<UserComListInfo> toComReadListInfos(List<UserInfo> userInfos){
 		var userComListInfos = new ArrayList<UserComListInfo>();
 		return userComListInfos;
