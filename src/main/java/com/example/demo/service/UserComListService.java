@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import com.example.demo.entity.UserListInfo;
+import com.example.demo.entity.UserComListInfo;
 import com.example.demo.entity.UserSearchInfo;
 
 public interface UserComListService {
@@ -11,7 +11,7 @@ public interface UserComListService {
 	 * 
 	 * @return ユーザ情報テーブルの全登録情報
 	 */
-	public List<UserListInfo>editUserList();
+	public List<UserComListInfo>editUserList();
 	
 	/**
 	 * ユーザ情報取得(条件付き)
@@ -21,7 +21,7 @@ public interface UserComListService {
 	 * @param form 入力情報
 	 * @return 検索結果
 	 */
-	public List<UserListInfo> editUserListByParam(UserSearchInfo dto);
+	public List<UserComListInfo> editUserListByParam(UserSearchInfo dto);
 	
 
 
