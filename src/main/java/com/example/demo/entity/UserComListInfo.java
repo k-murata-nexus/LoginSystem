@@ -31,4 +31,13 @@ public class UserComListInfo {
 	
 	/** 連絡確認状況 */
 	private boolean isNoticeWatched = true;
+	
+	/** 日報 */
+	private String submissonDay = null;
+	
+	/** 週報 */
+	private String submissonWeek = null;
+	
+	/** 月報 */
+	private String submissonMonth = null;
 }

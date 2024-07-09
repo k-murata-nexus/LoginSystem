@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -26,8 +27,7 @@ public class CommunicationInputServiceImpl implements CommunicationInputService 
 	 */
 	@Override
 	public Optional<UserInfo> serchUserById(String userInfo) {
-		// TODO 自動生成されたメソッド・スタブ
-		return Optional.empty();
+		return repository.findById(userInfo);
 	}
 
 	/**
@@ -36,7 +36,7 @@ public class CommunicationInputServiceImpl implements CommunicationInputService 
 	@Override
 	public void setContactAddress(String address) {
 		// TODO 自動生成されたメソッド・スタブ
-
+		
 	}
 
 	/**
@@ -53,8 +53,15 @@ public class CommunicationInputServiceImpl implements CommunicationInputService 
 	 */
 	@Override
 	public boolean isSubmissonDay(UserComListInfo userComListInfos) {
-		// TODO 自動生成されたメソッド・スタブ
-		return false;
+		
+		/** boolean判定変数 */
+		boolean isDay = false;
+		
+		if(Objects.isNull(userComListInfos.getSubmissonDay())) {
+			isDay = true;
+		}
+		
+		return isDay;
 	}
 
 	/**
@@ -62,8 +69,15 @@ public class CommunicationInputServiceImpl implements CommunicationInputService 
 	 */
 	@Override
 	public boolean isSubmissonWeek(UserComListInfo userComListInfos) {
-		// TODO 自動生成されたメソッド・スタブ
-		return false;
+
+		/** boolean判定変数 */
+		boolean isWeek = false;
+		
+		if(Objects.isNull(userComListInfos.getSubmissonWeek())) {
+			isWeek = true;
+		}
+		
+		return isWeek;
 	}
 
 	/**
@@ -71,8 +85,15 @@ public class CommunicationInputServiceImpl implements CommunicationInputService 
 	 */
 	@Override
 	public boolean isSubmissonMonth(UserComListInfo userComListInfos) {
-		// TODO 自動生成されたメソッド・スタブ
-		return false;
+		
+		/** boolean判定変数 */
+		boolean isMonth = false;
+		
+		if(Objects.isNull(userComListInfos.getSubmissonMonth())) {
+			isMonth = true;
+		}
+		
+		return isMonth;
 	}
 
 }
